@@ -1,0 +1,46 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CharCard from '../components/CharCard.astro';
+//import Card from '../components/Card.astro';
+// import {getCharacterData} from "../components/charinfo";
+
+// const characterName = await getCharacterData();
+// export { characterName };
+// console.log(characterName);
+---
+
+<Layout title="AYE">
+	<main>
+		<h1>Generator</h1>
+		<section class="form">
+			<form id="form">
+				<input type="text" name="cname" id="cname">
+				<button type="submit" id="button">Submit</button>
+			</form>
+		</section>
+		<section class="output" id="output">
+			
+		</section>
+		<CharCard />
+	</main>
+	<script src="../components/fetch.js"></script>
+</Layout>
+
+<style is:global>
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	main {
+		margin: auto;
+		padding: 1rem;
+		width: 800px;
+		max-width: calc(100% - 2rem);
+		color: white;
+		font-size: 20px;
+		line-height: 1.6;
+	}
+
+</style>

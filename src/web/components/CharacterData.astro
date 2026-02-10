@@ -1,0 +1,8 @@
+---
+import {getCharacterData} from "./charinfo";
+
+const characterName = await getCharacterData();
+export { characterName };
+---
+
+<p>{characterName}</p>
