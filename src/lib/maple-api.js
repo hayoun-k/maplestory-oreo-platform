@@ -9,8 +9,8 @@ export async function getCharacterData(characterName, useInternalProxy = false) 
   // If running on bot, fetch directly from Nexon to avoid CORS/latency issues.
   const API_URL = useInternalProxy 
     ? `/api/character?name=${characterName}`
-    : `https://www.nexon.com/api/maplestory/no-auth/v1/ranking/na?type=overall&id=weekly&reboot_index=0&page_index=1&character_name=${characterName}`;
-
+    : `https://www.nexon.com/api/maplestory/no-auth/ranking/v2/na?type=overall&id=weekly&reboot_index=0&page_index=1&character_name=${characterName}`;
+//https://www.nexon.com/api/maplestory/no-auth/ranking/v2/na?type=overall&id=weekly&reboot_index=0&page_index=1&character_name=habanerooreo
   try {
     const response = await fetch(API_URL);
     
