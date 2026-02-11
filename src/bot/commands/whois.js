@@ -1,5 +1,5 @@
 import { createEmbedResponse } from './register.js';
-import { getMemberData } from '../utils/storage.js';
+import { getMemberData } from '../../lib/storage.js';
 
 /**
  * Configuration for Guild Officers

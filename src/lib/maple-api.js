@@ -7,7 +7,9 @@ export async function getCharacterData(characterName) {
   if (!characterName) return null;
 
   // Note: Using the CORS proxy as defined in the original MScharcard repo
-  const API_URL = `https://cors-anywhere.herokuapp.com/https://www.nexon.com/api/maplestory/no-auth/v1/ranking/na?type=overall&id=weekly&reboot_index=0&page_index=1&character_name=${characterName}`;
+  const API_URL = useInternalProxy 
+    ? `/api/character?name=${characterName}`
+    : `https://www.nexon.com/api/maplestory/no-auth/v1/ranking/na?type=overall&id=weekly&reboot_index=0&page_index=1&character_name=${characterName}`;
 
   try {
     const response = await fetch(API_URL);

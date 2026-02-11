@@ -1,5 +1,5 @@
 import { setMemberData, getMemberData } from '../../lib/storage.js';
-import { getCharacterData } from '../lib/maple-api.js';
+import { getCharacterData } from '../../lib/maple-api.js';
 
 /**
  * Enhanced response helper for Discord Embeds
