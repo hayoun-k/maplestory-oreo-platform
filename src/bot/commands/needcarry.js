@@ -1,5 +1,5 @@
 import { createResponse, createEmbedResponse } from './index.js';
-import { getMemberData } from '../utils/storage.js';
+import { getMemberData } from '../../lib/storage.js';
 
 export async function needcarryCommand(interaction, env) {
   const userId = interaction.member.user.id;

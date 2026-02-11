@@ -1,5 +1,5 @@
 import { createEmbedResponse } from './register.js';
-import { getAllMembers } from '../utils/storage.js';
+import { getAllMembers } from '../../lib/storage.js';
 
 export async function guildlistCommand(interaction, env) {
   try {

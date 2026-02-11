@@ -20,6 +20,6 @@ export default defineConfig({
   }),
 
   // Optional: If your Astro files are nested in src/web
-  srcDir: './src',
-  publicDir: '../../public', // Points to root public dir if applicable
+  srcDir: './src/web',
+  publicDir: './public', // Points to root public dir if applicable
 });
