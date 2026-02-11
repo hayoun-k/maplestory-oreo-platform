@@ -32,7 +32,7 @@ export async function registerCommand(interaction, env) {
 
   try {
     // 2. Fetch Real-time Data from Nexon API
-    const mapleData = await getCharacterData(ign);
+    const mapleData = await getCharacterData(ign, false);
 
     if (!mapleData) {
       return createEmbedResponse({
