@@ -10,11 +10,13 @@
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "^0.8.19",
+		"@cloudflare/workers-types": "^4.20260210.0",
 		"vitest": "~3.2.0",
 		"wrangler": "^4.37.0"
 	},
 	"dependencies": {
-		"discord-interactions": "^4.3.0",
-		"astro": "^5.8.1"
+		"@astrojs/cloudflare": "^12.6.12",
+		"astro": "^5.8.1",
+		"discord-interactions": "^4.3.0"
 	}
 }
