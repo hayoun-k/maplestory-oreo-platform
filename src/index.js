@@ -6,6 +6,7 @@ import { handle as astroHandler } from '@astrojs/cloudflare/handler';
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    console.log("Incoming URL:", request.url); // Log this to see if it's malformed
 
     // 1. Route Discord Interactions (POST requests with signature headers)
     const signature = request.headers.get('x-signature-ed25519');

@@ -9,7 +9,6 @@
 		"start": "wrangler dev",
 		"test": "vitest",
 		"adev": "astro dev"
-
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "^0.8.19",

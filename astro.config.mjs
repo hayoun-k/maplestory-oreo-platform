@@ -3,6 +3,7 @@ import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://oreobot2025.hayoun-k-1102.workers.dev',
   // Set output to 'server' to enable SSR and access Cloudflare KV at runtime
   output: 'server',
 
