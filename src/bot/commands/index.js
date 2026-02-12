@@ -11,7 +11,7 @@ const commands = {
   'guildlist': guildlistCommand
 };
 
-export async function handleCommand(interaction, env) {
+export async function handleCommand(interaction, env, ctx) {
   const commandName = interaction.data.name;
   const commandHandler = commands[commandName];
 
@@ -20,7 +20,7 @@ export async function handleCommand(interaction, env) {
   }
 
   try {
-    return await commandHandler(interaction, env);
+    return await commandHandler(interaction, env, ctx);
   } catch (error) {
     console.error('Command error:', error);
     return createResponse('Sorry, something went wrong!');

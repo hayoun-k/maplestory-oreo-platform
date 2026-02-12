@@ -1,20 +1,6 @@
+import { createEmbedResponse } from './index.js';
 import { setMemberData, getMemberData } from '../../lib/storage.js';
 import { getCharacterData } from '../../lib/maple-api.js';
-
-/**
- * Enhanced response helper for Discord Embeds
- */
-export function createEmbedResponse(embed, ephemeral = false) {
-  return new Response(JSON.stringify({
-    type: 4, // CHANNEL_MESSAGE_WITH_SOURCE
-    data: {
-      embeds: [embed],
-      flags: ephemeral ? 64 : 0
-    }
-  }), {
-    headers: { 'Content-Type': 'application/json' }
-  });
-}
 
 export async function registerCommand(interaction, env) {
   const userId = interaction.member.user.id;

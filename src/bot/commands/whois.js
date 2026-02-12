@@ -1,4 +1,4 @@
-import { createEmbedResponse } from './register.js';
+import { createEmbedResponse } from './index.js';
 import { getMemberData } from '../../lib/storage.js';
 
 /**

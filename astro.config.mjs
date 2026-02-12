@@ -15,8 +15,8 @@ export default defineConfig({
     },
     // Matches the runtime environment of your Cloudflare Worker/Pages
     runtime: {
-      mode: 'complete',
-      type: 'pages',
+      mode: 'local',
+      type: 'worker',
     }
   }),
 

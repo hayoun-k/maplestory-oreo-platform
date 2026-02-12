@@ -1,14 +1,15 @@
 ---
-
+const { name, level, job, imageUrl } = Astro.props;
 ---
 <section class="card">
   <div>
-    <h2 class="ign">hehehe</h2>
-    <p class="level">282</p>
+    <h2 class="ign">{name}</h2>
+    <p class="level">{level}</p>
+    <p class="job">{job}</p>
   </div>
   <div class="background">
     <img src="" alt="">
-    <img src="https://msavatar1.nexon.net/Character/HAIHONBOKJJOILFLDMEBECLIJJOBDFIBOMGKLNCNOAAPGMJBJHLCNHILJJDAHELJEOCKJCIBBOMPDPFMFAPFEIFAMHLDANPFNOAFMACMABIDMKLBAAOPIOMDJKEODOOGPNDEJKKIIFHNFCHMOGECPMILLNKPHNJDHJDJHANOAFMKOKNCOONOLNLMCDNNONCCDFNEFAICECPMPCGIAHECKIOPIOMCEOOOHDJCAOALJLJJGJEGBHGGCHPOMDINILJC.png" alt="" class="char">
+    <img src={imageUrl} alt="" class="char">
   </div>
   <div class="text">
     <p class="world"></p>
