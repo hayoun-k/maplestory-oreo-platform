@@ -1,35 +1,54 @@
-import { createResponse, createEmbedResponse } from './index.js';
+import { InteractionResponseType } from 'discord-interactions';
 import { getMemberData } from '../../lib/storage.js';
 
-export async function needcarryCommand(interaction, env) {
+export function needcarryCommand(interaction, env, ctx) {
+  // IMMEDIATELY return a deferred response to Discord
+  ctx.waitUntil(processCarryRequest(interaction, env));
+  
+  return new Response(JSON.stringify({
+    type: InteractionResponseType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE,
+  }), {
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+
+async function processCarryRequest(interaction, env) {
   const userId = interaction.member.user.id;
   const username = interaction.member.user.username;
   const userAvatar = interaction.member.user.avatar;
   const boss = interaction.data.options?.[0]?.value;
   const notes = interaction.data.options?.[1]?.value || '';
 
-  // Missing boss validation
-  if (!boss) {
-    const embed = {
-      title: "⚠️ Missing Boss Name",
-      description: "Please specify which boss you need help with!",
-      color: 0xFFC107,
-      fields: [
-        {
-          name: "💡 Example Usage",
-          value: "`/needcarry Normal Zakum`\n`/needcarry Chaos Horntail Need help clearing`",
-          inline: false
-        }
-      ],
-      footer: {
-        text: "OreoBot • MapleStory Guild Assistant"
-      },
-      timestamp: new Date().toISOString()
-    };
-    return createEmbedResponse(embed, true);
-  }
+  const followUpUrl = `https://discord.com/api/v10/webhooks/${interaction.application_id}/${interaction.token}/messages/@original`;
 
   try {
+    // Missing boss validation
+    if (!boss) {
+      const embed = {
+        title: "⚠️ Missing Boss Name",
+        description: "Please specify which boss you need help with!",
+        color: 0xFFC107,
+        fields: [
+          {
+            name: "💡 Example Usage",
+            value: "`/needcarry Normal Zakum`\n`/needcarry Chaos Horntail Need help clearing`",
+            inline: false
+          }
+        ],
+        footer: {
+          text: "OreoBot • MapleStory Guild Assistant"
+        },
+        timestamp: new Date().toISOString()
+      };
+      
+      await fetch(followUpUrl, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ embeds: [embed], flags: 64 }) // ephemeral
+      });
+      return;
+    }
+
     // Check if user is registered
     const memberData = await getMemberData(env.MEMBERS_KV, userId);
     
@@ -55,7 +74,13 @@ export async function needcarryCommand(interaction, env) {
         },
         timestamp: new Date().toISOString()
       };
-      return createEmbedResponse(embed, true);
+      
+      await fetch(followUpUrl, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ embeds: [embed], flags: 64 }) // ephemeral
+      });
+      return;
     }
     
     // Get user avatar URL
@@ -63,11 +88,11 @@ export async function needcarryCommand(interaction, env) {
       ? `https://cdn.discordapp.com/avatars/${userId}/${userAvatar}.png`
       : "https://cdn.discordapp.com/embed/avatars/0.png";
 
-    // Create the carry request embed (simple, no boss-specific info)
+    // Create the carry request embed
     const carryRequestEmbed = {
       title: `⚔️ Carry Request: ${boss}`,
       description: `<@${userId}> needs help with **${boss}**!`,
-      color: 0x2196F3, // Blue color for all carry requests
+      color: 0x2196F3,
       thumbnail: {
         url: avatarUrl
       },
@@ -147,7 +172,13 @@ export async function needcarryCommand(interaction, env) {
             },
             timestamp: new Date().toISOString()
           };
-          return createEmbedResponse(confirmationEmbed, true);
+          
+          await fetch(followUpUrl, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ embeds: [confirmationEmbed], flags: 64 }) // ephemeral
+          });
+          return;
         }
       } catch (webhookError) {
         console.error('Webhook error:', webhookError);
@@ -178,7 +209,11 @@ export async function needcarryCommand(interaction, env) {
       timestamp: new Date().toISOString()
     };
     
-    return createEmbedResponse(fallbackEmbed, false);
+    await fetch(followUpUrl, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ embeds: [fallbackEmbed] })
+    });
     
   } catch (error) {
     console.error('Error posting carry request:', error);
@@ -205,6 +240,10 @@ export async function needcarryCommand(interaction, env) {
       timestamp: new Date().toISOString()
     };
     
-    return createEmbedResponse(errorEmbed, true);
+    await fetch(followUpUrl, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ embeds: [errorEmbed], flags: 64 }) // ephemeral
+    });
   }
 }

@@ -3,6 +3,9 @@ import Layout from '../layouts/Layout.astro';
 import CharCard from '../components/CharCard.astro';
 import { getAllMembers } from '../../lib/storage.js';
 
+// Enable SSR for this page (required for runtime KV access)
+export const prerender = false;
+
 // Access the Cloudflare Runtime through Astro.locals
 const runtime = Astro.locals.runtime;
 let members = [];

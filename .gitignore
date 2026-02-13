@@ -173,3 +173,19 @@ dist
 
 #env
 .env
+
+check-discord-commands.js
+register-discord-commands.js
+
+# Old/backup/test files
+*.old
+*_old.*
+*_backup.*
+*.bak
+src/index.js_old
+src/web/_worker.js
+worker.js
+
+# Project documentation (personal notes)
+FIX_SUMMARY.md
+SECURITY_AUDIT.md
