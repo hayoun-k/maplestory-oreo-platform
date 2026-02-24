@@ -1,6 +1,6 @@
 import { InteractionResponseType } from 'discord-interactions';
 import { setMemberData, getMemberData } from '../../lib/storage.js';
-import { getCharacterData } from '../../lib/maple-api.js';
+import { getCharacterData, getLegionLevel } from '../../lib/maple-api.js';
 
 export function registerCommand(interaction, env, ctx) {
   // IMMEDIATELY return a deferred response to Discord
@@ -39,7 +39,10 @@ async function processRegistration(interaction, env) {
     }
 
     // 2. Fetch Real-time Data from Nexon API (this can take time)
-    const mapleData = await getCharacterData(ign, false);
+    const [mapleData, legionLevel] = await Promise.all([
+      getCharacterData(ign, false),
+      getLegionLevel(ign)
+    ]);
 
     if (!mapleData) {
       await fetch(followUpUrl, {
@@ -67,6 +70,7 @@ async function processRegistration(interaction, env) {
       level: mapleData.level,
       job: mapleData.job,
       imageUrl: mapleData.imageUrl,
+      legionLevel: legionLevel ?? existingData?.legionLevel ?? null,
       registeredAt: existingData?.registeredAt || new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
@@ -85,7 +89,10 @@ async function processRegistration(interaction, env) {
       fields: [
         { name: "🎯 Level", value: String(mapleData.level), inline: true },
         { name: "⚔️ Job", value: mapleData.job, inline: true },
-        { name: "👤 Discord", value: `<@${userId}>`, inline: true }
+        { name: "👤 Discord", value: `<@${userId}>`, inline: true },
+        ...(memberData.legionLevel != null
+          ? [{ name: "⚜️ Legion", value: String(memberData.legionLevel), inline: true }]
+          : [])
       ],
       footer: { text: "View the full roster on our website!" },
       timestamp: new Date().toISOString()

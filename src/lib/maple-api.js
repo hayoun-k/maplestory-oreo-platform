@@ -1,6 +1,26 @@
 /**
  * Shared utility to fetch character data from Nexon's MapleStory NA Ranking API.
  */
+
+export async function getLegionLevel(characterName) {
+  if (!characterName) return null;
+
+  const API_URL = `https://www.nexon.com/api/maplestory/no-auth/ranking/v2/na?type=legion&id=45&reboot_index=0&page_index=1&character_name=${encodeURIComponent(characterName)}`;
+
+  try {
+    const response = await fetch(API_URL);
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    if (!data.ranks || data.ranks.length === 0) return null;
+
+    return data.ranks[0].legionLevel;
+  } catch (error) {
+    console.error("Error fetching legion level:", error);
+    return null;
+  }
+}
+
 // 👇 FIXED: Added 'useInternalProxy = false' to the arguments
 export async function getCharacterData(characterName, useInternalProxy = false) {
   if (!characterName) return null;

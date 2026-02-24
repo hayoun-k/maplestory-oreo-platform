@@ -1,10 +1,11 @@
 ---
-const { name, level, job, imageUrl } = Astro.props;
+const { name, level, job, imageUrl, legionLevel } = Astro.props;
 ---
 <section class="card">
   <div>
     <h2 class="ign">{name}</h2>
     <p class="level">{level}</p>
+    {legionLevel != null && <p class="legion">⚜️ {legionLevel}</p>}
     <p class="job">{job}</p>
   </div>
   <div class="background">

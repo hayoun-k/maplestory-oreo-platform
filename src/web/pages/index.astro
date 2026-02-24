@@ -38,11 +38,12 @@ try {
 		<div class="roster-grid">
 			{members.length > 0 ? (
 				members.map((member) => (
-					<CharCard 
-						name={member.ign} 
-						level={member.level || "???"} 
-						job={member.job || "Unknown"} 
-						imageUrl={member.imageUrl} 
+					<CharCard
+						name={member.ign}
+						level={member.level || "???"}
+						job={member.job || "Unknown"}
+						imageUrl={member.imageUrl}
+						legionLevel={member.legionLevel ?? null}
 					/>
 				))
 			) : (

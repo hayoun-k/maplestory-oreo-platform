@@ -45,7 +45,8 @@ async function createAndSendGuildList(interaction, env) {
         const rank = startIndex + index + 1;
         const levelStr = member.level ? `[Lv.${member.level}]` : '[??]';
         const jobStr = member.job ? ` - ${member.job}` : '';
-        return `\`${rank}.\` **${member.ign}** ${levelStr}${jobStr}\n└ <@${member.discordId}>`;
+        const legionStr = member.legionLevel != null ? ` ⚜️${member.legionLevel}` : '';
+        return `\`${rank}.\` **${member.ign}** ${levelStr}${jobStr}${legionStr}\n└ <@${member.discordId}>`;
       }).join('\n\n');
 
       const avgLevel = Math.round(members.reduce((acc, m) => acc + (m.level || 0), 0) / members.length);
