@@ -5,9 +5,11 @@ import { getCharacterData, getLegionLevel } from '../../lib/maple-api.js';
 export function registerCommand(interaction, env, ctx) {
   // IMMEDIATELY return a deferred response to Discord
   ctx.waitUntil(processRegistration(interaction, env));
-  
+
+  // Defer ephemerally when a webhook channel is configured so "thinking..." stays private
   return new Response(JSON.stringify({
     type: InteractionResponseType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE,
+    data: env.BOT_CHANNEL_WEBHOOK ? { flags: 64 } : {}
   }), {
     headers: { 'Content-Type': 'application/json' }
   });
@@ -98,11 +100,32 @@ async function processRegistration(interaction, env) {
       timestamp: new Date().toISOString()
     };
 
-    await fetch(followUpUrl, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ embeds: [embed] })
-    });
+    if (env.BOT_CHANNEL_WEBHOOK) {
+      // Post the full embed to the designated bot channel
+      await fetch(env.BOT_CHANNEL_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ embeds: [embed] })
+      });
+      // Send an ephemeral confirmation back to the user
+      await fetch(followUpUrl, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          embeds: [{
+            title: isUpdate ? "✅ Profile Updated!" : "✅ Welcome to Oreo!",
+            description: `Your profile for **${mapleData.name}** has been posted to the bot channel.`,
+            color: 0x4CAF50
+          }]
+        })
+      });
+    } else {
+      await fetch(followUpUrl, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ embeds: [embed] })
+      });
+    }
 
   } catch (error) {
     console.error('Registration error:', error);

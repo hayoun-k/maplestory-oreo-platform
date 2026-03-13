@@ -6,9 +6,11 @@ import { getAllMembers } from '../../lib/storage.js';
 export function guildlistCommand(interaction, env, ctx) {
   // Immediately return a deferred response to Discord
   ctx.waitUntil(createAndSendGuildList(interaction, env));
-  
+
+  // Defer ephemerally when a webhook channel is configured so "thinking..." stays private
   return new Response(JSON.stringify({
     type: InteractionResponseType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE,
+    data: env.BOT_CHANNEL_WEBHOOK ? { flags: 64 } : {}
   }), {
     headers: { 'Content-Type': 'application/json' }
   });
@@ -80,11 +82,31 @@ async function createAndSendGuildList(interaction, env) {
     
     // Send the follow-up message
     const followUpUrl = `https://discord.com/api/v10/webhooks/${interaction.application_id}/${interaction.token}/messages/@original`;
-    await fetch(followUpUrl, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ embeds: [embed] })
-    });
+
+    if (env.BOT_CHANNEL_WEBHOOK) {
+      await fetch(env.BOT_CHANNEL_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ embeds: [embed] })
+      });
+      await fetch(followUpUrl, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          embeds: [{
+            title: "✅ Roster Posted",
+            description: "The guild roster has been posted to the bot channel.",
+            color: 0x4CAF50
+          }]
+        })
+      });
+    } else {
+      await fetch(followUpUrl, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ embeds: [embed] })
+      });
+    }
 
   } catch (error) {
     console.error('Error fetching guild list:', error);

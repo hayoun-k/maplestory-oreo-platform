@@ -1,36 +1,113 @@
 ---
+import Image from "astro/components/Image.astro";
+import cardBg from "../assets/pics/card_bg_transparent.png"
 const { name, level, job, imageUrl, legionLevel } = Astro.props;
 ---
 <section class="card">
-  <div>
+  <div class="info">
     <h2 class="ign">{name}</h2>
-    <p class="level">{level}</p>
-    {legionLevel != null && <p class="legion">⚜️ {legionLevel}</p>}
-    <p class="job">{job}</p>
+    <div class="right">
+      <p class="level">{level}</p>
+      
+      <p class="job">{job}</p>
+    </div>
   </div>
-  <div class="background">
-    <img src="" alt="">
+  <div class="avatar">
     <img src={imageUrl} alt="" class="char">
   </div>
   <div class="text">
     <p class="world"></p>
+    {legionLevel != null && <p class="legion">⚜️ {legionLevel}</p>}
     <p class="comments">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum, quibusdam.</p>
   </div>
+  <Image src={cardBg} alt="background image" class="background-img" width={300} />
 </section>
 
 <style>
   h2, p {
-    color: black;
+    margin: 0;
     font-family: 'Cherry Bomb One', system-ui;
     font-weight: 400;
   }
 
   .card {
-    max-width: 320px;
+    width: 320px;
+    margin: 24px;
     /* aspect-ratio: 1 / 1.58; */
     aspect-ratio: 5.5 / 8.5;
-    background-color: aliceblue;
-    border: 3px solid white;
+    background-color: white;
+    border: 5px solid black;
     border-radius: 15px;
+    position: relative;
+  }
+
+  .info,
+  .avatar,
+  .text {
+    position: relative;
+    z-index: 2;
+  }
+
+  .info {
+    padding: 1rem;
+    border-radius: 10px 10px 0 0;
+    background-color: #1c1c1c;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    z-index: 3;
+    }
+
+  .ign {
+    font-size: 24px;
+  }
+
+  .info .right {
+    width: 100px;
+    height: 100px;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    background-color: gold;
+    text-align: center;
+    color: black;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+    bottom: -30px;
+    z-index: 4;
+  }
+
+  .level {
+    font-size: 22px;
+    line-height: 1;
+  }
+
+  .job {
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  .avatar {
+    border: 3px solid black;
+    border-width: 3px 0 3px 0;
+  }
+
+  .char {
+    width: 80%;
+    margin-inline: auto;
+    display: block;
+  }
+
+  .background-img {
+    max-width: 100%;
+    aspect-ratio: 1/1;
+    position: absolute;
+    opacity: 0.4;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 0;
   }
 </style>
