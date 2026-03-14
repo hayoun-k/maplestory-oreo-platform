@@ -90,14 +90,23 @@ const { name, level, job, imageUrl, legionLevel } = Astro.props;
   }
 
   .avatar {
-    border: 3px solid black;
-    border-width: 3px 0 3px 0;
+    width: 100%;
+    position: absolute;
+    top: 43%;
+    transform: translateY(-50%);
   }
 
   .char {
     width: 80%;
     margin-inline: auto;
     display: block;
+  }
+
+  .text {
+    height: auto;
+    background-color: #1c1c1c;
+    position: absolute;
+    bottom: 0;
   }
 
   .background-img {

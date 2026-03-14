@@ -189,3 +189,6 @@ worker.js
 # Project documentation (personal notes)
 FIX_SUMMARY.md
 SECURITY_AUDIT.md
+MIGRATION_CHECKLIST.md
+FILES_TO_TRANSPORT.txt
+PRE_PUSH_CHECKLIST.txt
